@@ -36,7 +36,7 @@ def main():
             "reply": answer.reply,
             "citations": answer.citations,
         }
-        print(json.dumps(result))
+        print(json.dumps(result, ensure_ascii=False))
         sys.exit(0)
 
     except (ValueError, anthropic.APIError, IndexError, AttributeError) as e:
