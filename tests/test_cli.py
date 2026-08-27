@@ -91,6 +91,32 @@ class TestCLINetworkError:
         assert error_msg in captured.err
 
 
+class TestCLINonAsciiOutput:
+    """Test: non-ASCII characters in a reply (e.g. an en dash) print
+    literally in the CLI's JSON output, not as \\uXXXX escapes."""
+
+    def test_cli_prints_non_ascii_characters_literally_not_escaped(self, capsys):
+        """A reply containing an en dash prints as a literal character in
+        stdout, not as a \\uXXXX escape sequence."""
+        expected_answer = Answer(
+            intent="hours",
+            reply="We are open Monday–Friday.",
+            citations=["hours.md"]
+        )
+
+        with patch("policy_bot.cli.answer_question", return_value=expected_answer):
+            with patch("policy_bot.cli.load_kb", return_value={"hours.md": "content"}):
+                with pytest.raises(SystemExit) as exc_info:
+                    sys.argv = ["cli", "Are you open?"]
+                    main()
+
+                assert exc_info.value.code == 0
+
+        captured = capsys.readouterr()
+        assert "Monday–Friday" in captured.out
+        assert "\\u2013" not in captured.out
+
+
 class TestCLIMissingAPIKey:
     """Test: running the CLI with no ANTHROPIC_API_KEY set prints a clear
     error to stderr and exits non-zero, without attempting any KB load or
