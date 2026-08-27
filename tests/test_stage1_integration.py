@@ -22,6 +22,14 @@ from policy_bot.cli import main
 KB_DIR = Path(__file__).resolve().parents[1] / "data" / "kb"
 
 
+@pytest.fixture(autouse=True)
+def anthropic_api_key(monkeypatch):
+    """cli.main() now checks ANTHROPIC_API_KEY upfront; give these
+    integration tests a fake one so they don't depend on the ambient
+    environment (the Anthropic client class itself is mocked anyway)."""
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
+
+
 def make_mock_response(intent, reply, citations, input_tokens=42, output_tokens=17):
     """Build a canned Anthropic-SDK-shaped response.
 
