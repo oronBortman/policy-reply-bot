@@ -4,28 +4,36 @@
     "stage": 1,
     "type": "baseline",
     "message": "Are you open on Sundays?",
-    "expected_answer": "No — closed Sundays. Open Mon–Fri 9–18, Sat 10–16."
+    "expected_answer": "No — closed Sundays. Open Mon–Fri 9–18, Sat 10–16.",
+    "expected_intent": "hours",
+    "expected_citations": ["hours.md"]
   },
   {
     "id": "s1-02",
     "stage": 1,
     "type": "baseline",
     "message": "I bought a jacket 10 days ago, can I get my money back?",
-    "expected_answer": "Yes — within the 30-day window, refunded to original payment method within 5 business days, if unused and in original packaging."
+    "expected_answer": "Yes — within the 30-day window, refunded to original payment method within 5 business days, if unused and in original packaging.",
+    "expected_intent": "refund",
+    "expected_citations": ["refunds.md"]
   },
   {
     "id": "s1-03",
     "stage": 1,
     "type": "baseline",
     "message": "What backpacks do you sell?",
-    "expected_answer": "Everyday Backpack, 20L, $65, black or olive."
+    "expected_answer": "Everyday Backpack, 20L, $65, black or olive.",
+    "expected_intent": "product",
+    "expected_citations": ["products.md"]
   },
   {
     "id": "s1-04",
     "stage": 1,
     "type": "baseline",
     "message": "Can you help me file my taxes?",
-    "expected_answer": "Polite decline — not something the shop's knowledge base covers."
+    "expected_answer": "Polite decline — not something the shop's knowledge base covers.",
+    "expected_intent": "other",
+    "expected_citations": []
   },
   {
     "id": "s2-01",
