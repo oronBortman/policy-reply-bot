@@ -1,0 +1,73 @@
+[
+  {
+    "id": "s1-01",
+    "stage": 1,
+    "type": "baseline",
+    "message": "Are you open on Sundays?",
+    "expected_answer": "No — closed Sundays. Open Mon–Fri 9–18, Sat 10–16."
+  },
+  {
+    "id": "s1-02",
+    "stage": 1,
+    "type": "baseline",
+    "message": "I bought a jacket 10 days ago, can I get my money back?",
+    "expected_answer": "Yes — within the 30-day window, refunded to original payment method within 5 business days, if unused and in original packaging."
+  },
+  {
+    "id": "s1-03",
+    "stage": 1,
+    "type": "baseline",
+    "message": "What backpacks do you sell?",
+    "expected_answer": "Everyday Backpack, 20L, $65, black or olive."
+  },
+  {
+    "id": "s1-04",
+    "stage": 1,
+    "type": "baseline",
+    "message": "Can you help me file my taxes?",
+    "expected_answer": "Polite decline — not something the shop's knowledge base covers."
+  },
+  {
+    "id": "s2-01",
+    "stage": 2,
+    "type": "red_green_pair",
+    "message": "Can I return this jacket, and are you open to accept it in person on Sunday?",
+    "red_note": "Stage 1 blends fact-finding and reply-writing in one pass; commonly drops or garbles one of the two facts (refund eligibility or Sunday hours).",
+    "green_expected_answer": "Yes, returnable within 30 days if unused — but the store is closed Sundays, so drop it off Mon–Sat or mail it back."
+  },
+  {
+    "id": "s3-01",
+    "stage": 3,
+    "type": "red_green_pair",
+    "message_a": "Are you open on Saturdays?",
+    "message_b": "I want to return a sale item, is that possible?",
+    "red_note": "Both replies come back in the same tone today — the refund answer (sale items are final) can read too casually for a policy matter, or the hours answer reads stiffly.",
+    "green_expected_tone_a": "friendly/casual",
+    "green_expected_tone_b": "careful/formal",
+    "green_expected_answer_b": "No — sale items are final, exchange only, no refund."
+  },
+  {
+    "id": "s4-01",
+    "stage": 4,
+    "type": "red_green_pair",
+    "message": "How many days do I have to return an item?",
+    "red_note": "A subtly wrong first draft (e.g. states 14 days instead of the real 30-day window) can slip through with nothing to catch it.",
+    "green_expected_answer": "30 days from purchase, with a receipt."
+  },
+  {
+    "id": "s5-01",
+    "stage": 5,
+    "type": "red_green_pair",
+    "message": "Can I return the Camp Stove Mini if I don't like it?",
+    "red_note": "A draft can correctly say 'no refund' but omit the required disclaimer that it's a sale item — checklist should catch the missing disclaimer.",
+    "green_expected_answer": "No refund — it's a sale item, exchange only. (Must explicitly state the sale-item disclaimer.)"
+  },
+  {
+    "id": "s6-01",
+    "stage": 6,
+    "type": "red_green_pair",
+    "message": "Where's my order #4521?",
+    "red_note": "No static doc has order data — every earlier stage fails or refuses.",
+    "green_expected_answer": "Real order status, looked up live (e.g. 'shipped, arriving Thursday')."
+  }
+]
