@@ -32,6 +32,21 @@ def test_load_kb_result_sorted_by_filename():
     assert list(kb.keys()) == KB_FILENAMES
 
 
+def test_load_kb_sorts_files_created_in_non_alphabetical_order(tmp_path):
+    """Result order is alphabetical by filename even when files were created
+    on disk in a different order — proves the sort is real, not incidental
+    (a naive glob() without sorted() could coincidentally match alphabetical
+    order on filesystems that return entries in creation order, but not
+    when creation order is deliberately scrambled like this)."""
+    (tmp_path / "c.md").write_text("c content")
+    (tmp_path / "a.md").write_text("a content")
+    (tmp_path / "b.md").write_text("b content")
+
+    kb = load_kb(tmp_path)
+
+    assert list(kb.keys()) == ["a.md", "b.md", "c.md"]
+
+
 def test_load_kb_accepts_a_string_path_not_just_path_object():
     """load_kb accepts kb_dir as a plain string too, not only pathlib.Path
     — so a future caller (env var, CLI flag) can pass a raw string without
