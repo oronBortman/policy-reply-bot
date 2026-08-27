@@ -72,11 +72,11 @@ Rules:
 
 
 def answer_question(question: str, kb: dict, client, model: str = DEFAULT_MODEL) -> Answer:
-    """Prefills the assistant turn with an opening "{" so the model
-    continues directly as JSON, reducing the chance it wraps the answer in
-    prose or markdown fences. The API response only contains the
-    continuation, not the prefill text, so the prefill is prepended back
-    on before parsing."""
+    """temperature is passed via extra_body since the installed anthropic
+    SDK's typed Messages.create() signature has no temperature parameter.
+    Prefills the assistant turn with an opening "{" so the model continues
+    directly as JSON; the API response only contains the continuation, not
+    the prefill text, so it's prepended back on before parsing."""
     system_prompt = build_system_prompt(kb)
     messages = [
         {"role": "user", "content": question},
@@ -87,7 +87,7 @@ def answer_question(question: str, kb: dict, client, model: str = DEFAULT_MODEL)
     response = client.messages.create(
         model=model,
         max_tokens=1024,
-        temperature=0,
+        extra_body={"temperature": 0},
         system=system_prompt,
         messages=messages,
     )
