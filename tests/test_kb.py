@@ -47,6 +47,23 @@ def test_load_kb_sorts_files_created_in_non_alphabetical_order(tmp_path):
     assert list(kb.keys()) == ["a.md", "b.md", "c.md"]
 
 
+def test_load_kb_raises_on_empty_kb_directory(tmp_path):
+    """An existing but empty KB directory (zero .md files) raises rather
+    than silently returning {} — every other component in this codebase
+    fails closed on a bad state, and load_kb should too."""
+    with pytest.raises(FileNotFoundError):
+        load_kb(tmp_path)
+
+
+def test_load_kb_raises_on_missing_kb_directory(tmp_path):
+    """A KB directory that doesn't exist at all raises rather than
+    silently returning {}."""
+    missing_dir = tmp_path / "does_not_exist"
+
+    with pytest.raises(FileNotFoundError):
+        load_kb(missing_dir)
+
+
 def test_load_kb_accepts_a_string_path_not_just_path_object():
     """load_kb accepts kb_dir as a plain string too, not only pathlib.Path
     — so a future caller (env var, CLI flag) can pass a raw string without
