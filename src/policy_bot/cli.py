@@ -1,3 +1,4 @@
+import os
 import sys
 import json
 from pathlib import Path
@@ -15,6 +16,13 @@ def main():
 
     message = sys.argv[1]
 
+    # anthropic.Anthropic() constructs fine with no key; the SDK only fails
+    # later, at request-build time, with a raw TypeError. Check upfront so
+    # we can give a clear error instead.
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        print("ANTHROPIC_API_KEY environment variable is not set", file=sys.stderr)
+        sys.exit(1)
+
     # cli.py is at src/policy_bot/cli.py; two parent levels up is the repo root
     kb_dir = Path(__file__).resolve().parents[2] / "data" / "kb"
 
@@ -28,10 +36,10 @@ def main():
             "reply": answer.reply,
             "citations": answer.citations,
         }
-        print(json.dumps(result))
+        print(json.dumps(result, ensure_ascii=False))
         sys.exit(0)
 
-    except (ValueError, anthropic.APIError) as e:
+    except (ValueError, anthropic.APIError, IndexError, AttributeError) as e:
         print(str(e), file=sys.stderr)
         sys.exit(1)
 

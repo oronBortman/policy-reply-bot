@@ -160,8 +160,35 @@ class TestClient:
         answer_question("What's the weather?", SAMPLE_KB, client)
 
         _, kwargs = client.messages.create.call_args
-        assert kwargs["temperature"] == 0
+        assert kwargs["extra_body"]["temperature"] == 0
         assert kwargs["max_tokens"] == 1024
+
+    def test_call_conforms_to_real_messages_create_signature(self):
+        """The call to client.messages.create() only uses keyword arguments
+        the installed anthropic SDK's Messages.create() actually accepts. A
+        plain Mock() (used by every other test here) accepts any kwarg
+        silently, so it can't catch a real SDK/client.py mismatch — this
+        test autospecs the real bound method so an unsupported kwarg raises
+        TypeError here instead of at runtime against the live API."""
+        import anthropic
+        from unittest.mock import create_autospec
+
+        response_text = json.dumps({
+            "intent": "other",
+            "reply": "I can't help with that.",
+            "citations": [],
+        })[1:]
+        mock_response = Mock()
+        mock_response.content = [Mock(text=response_text)]
+        mock_response.usage = Mock(input_tokens=1, output_tokens=1)
+
+        real_client = anthropic.Anthropic(api_key="test-key")
+        client = Mock()
+        client.messages.create = create_autospec(
+            real_client.messages.create, return_value=mock_response
+        )
+
+        answer_question("What's the weather?", SAMPLE_KB, client)
 
     def test_messages_include_assistant_prefill_starting_with_brace(self):
         """The API call's message list includes an assistant-role prefill

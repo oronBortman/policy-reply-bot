@@ -111,7 +111,9 @@ def answer_question(question: str, kb: dict, client, model: str = DEFAULT_MODEL)
     """Answer a customer question using the injected Anthropic-style client.
 
     Builds the system prompt from `kb`, calls `client.messages.create(...)`
-    with temperature=0 and max_tokens=1024, and prefills the assistant turn
+    with max_tokens=1024 and temperature=0 (passed via extra_body, since the
+    installed anthropic SDK's typed Messages.create() signature has no
+    temperature parameter), and prefills the assistant turn
     with an opening "{" so the model continues directly as JSON (reducing
     the chance it wraps its answer in prose or markdown fences). The prefill
     is prepended back onto the model's continuation before parsing, since
@@ -145,7 +147,7 @@ def answer_question(question: str, kb: dict, client, model: str = DEFAULT_MODEL)
     response = client.messages.create(
         model=model,
         max_tokens=1024,
-        temperature=0,
+        extra_body={"temperature": 0},
         system=system_prompt,
         messages=messages,
     )
