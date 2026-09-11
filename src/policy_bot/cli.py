@@ -9,7 +9,6 @@ from policy_bot.client import answer_question
 
 
 def main():
-    """CLI entry point: read a message from argv, call the policy bot, print JSON output."""
     if len(sys.argv) < 2:
         print("Usage: cli <message>", file=sys.stderr)
         sys.exit(1)
