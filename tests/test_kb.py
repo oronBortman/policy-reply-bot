@@ -3,7 +3,6 @@ from pathlib import Path
 from policy_bot.kb import load_kb
 
 
-# KB directory path resolved from test file location
 KB_DIR = Path(__file__).parent.parent / "data" / "kb"
 KB_FILENAMES = ["hours.md", "products.md", "refunds.md"]
 
